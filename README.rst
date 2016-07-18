@@ -1,5 +1,5 @@
-ETLT
-====
+ETLT-MySQL
+==========
 
 ETLT-MySQL: `ETLT <https://github.com/SetBased/py-etlt>`_ extension for `MariaDB and MySQL <https://mariadb.org/>`_ databases
  
