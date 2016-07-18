@@ -1,4 +1,9 @@
 build:
+    dependencies:
+        before:
+          - pip install etlt
+          - pip install pytz
+
     tests:
         override:
             -
@@ -12,10 +17,6 @@ checks:
 filter:
     excluded_paths:
         - test/*
-
-install:
-  - pip install etlt
-  - pip install pytz
 
 tools:
     pylint:
