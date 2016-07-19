@@ -3,6 +3,7 @@ build:
         before:
           - pip install etlt
           - pip install pytz
+          - pip install coverage
 
     tests:
         override:
