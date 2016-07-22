@@ -34,7 +34,7 @@ class MySqlLoaderWriterTest(unittest.TestCase):
 
         with writer:
             for row in rows:
-                writer.write(row)
+                writer.writerow(row)
 
         with open(filename_actual, 'rt', encoding='utf8') as file:
             actual = file.read()
