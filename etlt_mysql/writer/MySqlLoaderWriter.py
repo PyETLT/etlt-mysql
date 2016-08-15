@@ -45,6 +45,28 @@ class MySqlLoaderWriter(SqlLoaderWriter):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def write_decimal(value, file):
+        """
+        Writes a decimal as a field to a CSV file.
+
+        :param decimal.Decimal value: The decimal.
+        :param T file: The file.
+        """
+        file.write(str(value))
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def write_float(value, file):
+        """
+        Writes a float as a field to a CSV file.
+
+        :param float value: The float.
+        :param T file: The file.
+        """
+        file.write(str(value))
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def write_int(value, file):
         """
         Writes an integer as a field to a CSV file.
@@ -95,6 +117,17 @@ class MySqlLoaderWriter(SqlLoaderWriter):
         self._file.write(os.linesep)
 
     # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def write_uuid(value, file):
+        """
+        Writes a UUID as a field to a CSV file.
+
+        :param uuid.UUID value: The UUID.
+        :param T file: The file.
+        """
+        MySqlLoaderWriter.write_string(str(value), file)
+
+    # ------------------------------------------------------------------------------------------------------------------
     def get_bulk_load_sql(self, table_name):
         """
         Returns a SQL statement for bulk loading the data into a table.
@@ -117,8 +150,11 @@ class MySqlLoaderWriter(SqlLoaderWriter):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-MySqlLoaderWriter.register_handler("<class 'int'>", MySqlLoaderWriter.write_int)
-MySqlLoaderWriter.register_handler("<class 'str'>", MySqlLoaderWriter.write_string)
-MySqlLoaderWriter.register_handler("<class 'NoneType'>", MySqlLoaderWriter.write_none)
 MySqlLoaderWriter.register_handler("<class 'datetime.date'>", MySqlLoaderWriter.write_date)
 MySqlLoaderWriter.register_handler("<class 'datetime.datetime'>", MySqlLoaderWriter.write_datetime)
+MySqlLoaderWriter.register_handler("<class 'decimal.Decimal'>", MySqlLoaderWriter.write_decimal)
+MySqlLoaderWriter.register_handler("<class 'float'>", MySqlLoaderWriter.write_float)
+MySqlLoaderWriter.register_handler("<class 'int'>", MySqlLoaderWriter.write_int)
+MySqlLoaderWriter.register_handler("<class 'NoneType'>", MySqlLoaderWriter.write_none)
+MySqlLoaderWriter.register_handler("<class 'str'>", MySqlLoaderWriter.write_string)
+MySqlLoaderWriter.register_handler("<class 'uuid.UUID'>", MySqlLoaderWriter.write_uuid)
