@@ -45,6 +45,17 @@ class MySqlLoaderWriter(SqlLoaderWriter):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def write_timedelta(value, file):
+        """
+        Writes a timedelta as a field to a CSV file.
+
+        :param datetime.timedelta value: The timedelta.
+        :param T file: The file.
+        """
+        MySqlLoaderWriter.write_string(str(value), file)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def write_decimal(value, file):
         """
         Writes a decimal as a field to a CSV file.
@@ -152,6 +163,7 @@ class MySqlLoaderWriter(SqlLoaderWriter):
 # ----------------------------------------------------------------------------------------------------------------------
 MySqlLoaderWriter.register_handler("<class 'datetime.date'>", MySqlLoaderWriter.write_date)
 MySqlLoaderWriter.register_handler("<class 'datetime.datetime'>", MySqlLoaderWriter.write_datetime)
+MySqlLoaderWriter.register_handler("<class 'datetime.timedelta'>", MySqlLoaderWriter.write_timedelta)
 MySqlLoaderWriter.register_handler("<class 'decimal.Decimal'>", MySqlLoaderWriter.write_decimal)
 MySqlLoaderWriter.register_handler("<class 'float'>", MySqlLoaderWriter.write_float)
 MySqlLoaderWriter.register_handler("<class 'int'>", MySqlLoaderWriter.write_int)
