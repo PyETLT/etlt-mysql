@@ -10,7 +10,7 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name='ETLT-MySQL',
 
-    version='0.0.9',
+    version='0.0.10',
 
     description='ETLT extension for MariaDB and MySQL databases',
     # long_description=long_description,
