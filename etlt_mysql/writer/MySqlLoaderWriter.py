@@ -20,6 +20,20 @@ class MySqlLoaderWriter(SqlLoaderWriter):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def write_bool(value, file):
+        """
+        Writes a boolean as a field to a CSV file.
+
+        :param bool value: The boolean.
+        :param T file: The file.
+        """
+        if value:
+            file.write('1')
+        else:
+            file.write('0')
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def write_date(value, file):
         """
         Writes a date as a field to a CSV file.
@@ -161,6 +175,7 @@ class MySqlLoaderWriter(SqlLoaderWriter):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+MySqlLoaderWriter.register_handler("<class 'bool'>", MySqlLoaderWriter.write_bool)
 MySqlLoaderWriter.register_handler("<class 'datetime.date'>", MySqlLoaderWriter.write_date)
 MySqlLoaderWriter.register_handler("<class 'datetime.datetime'>", MySqlLoaderWriter.write_datetime)
 MySqlLoaderWriter.register_handler("<class 'datetime.timedelta'>", MySqlLoaderWriter.write_timedelta)
