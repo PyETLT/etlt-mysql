@@ -15,7 +15,7 @@ setup(
     description='ETLT extension for MariaDB and MySQL databases',
     long_description=long_description,
 
-    url='https://github.com/SetBased/py-etlt-mysql',
+    url='https://github.com/PyETLT/etlt-mysql',
 
     author='Paul Water',
     author_email='info@setbased.nl',
