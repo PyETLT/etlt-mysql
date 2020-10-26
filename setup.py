@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='ETLT-MySQL',
 
-    version='0.10.0',
+    version='0.10.1',
 
     description='ETLT extension for MariaDB and MySQL databases',
     long_description=long_description,
