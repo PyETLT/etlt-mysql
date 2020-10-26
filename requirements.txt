@@ -1,0 +1,6 @@
+# Must be aligned with setup.py.
+pytz>=2020.1
+ETLT>=0.9.6, <0.10
+
+# For development only.
+coverage>=5.3, <6

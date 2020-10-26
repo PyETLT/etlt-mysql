@@ -4,8 +4,8 @@ from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
 
-# with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-#    long_description = f.read()
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='ETLT-MySQL',
@@ -13,7 +13,7 @@ setup(
     version='0.10.0',
 
     description='ETLT extension for MariaDB and MySQL databases',
-    # long_description=long_description,
+    long_description=long_description,
 
     url='https://github.com/SetBased/py-etlt-mysql',
 
@@ -34,9 +34,10 @@ setup(
         'Operating System :: OS Independent',
 
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
 
         'Topic :: Database'
     ],
@@ -45,5 +46,6 @@ setup(
 
     packages=find_packages(exclude=['build', 'test']),
 
-    install_requires=['etlt', 'pytz']
+    install_requires=['ETLT>=0.9.6, <0.10',
+                      'pytz>=2020.1']
 )
