@@ -2,7 +2,8 @@ import datetime
 import os
 from abc import ABC
 from decimal import Decimal
-from typing import Any, Dict
+from typing import Any, Dict, Optional
+from uuid import UUID
 
 import pytz
 from etlt.writer.SqlLoaderWriter import SqlLoaderWriter
@@ -20,8 +21,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a boolean as a field to a CSV file.
 
-        :param bool value: The boolean.
-        :param Any file: The file like object
+        :param value: The boolean.
+        :param file: The file like object
         """
         if value:
             file.write('1')
@@ -34,8 +35,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a date as a field to a CSV file.
 
-        :param datetime.date value: The date.
-        :param Any file: The file like object
+        :param value: The date.
+        :param file: The file like object
         """
         file.write(value.isoformat())
 
@@ -45,8 +46,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a datetime as a field to a CSV file.
 
-        :param datetime.datetime value: The date.
-        :param Any file: The file like object
+        :param value: The date.
+        :param file: The file like object
         """
         zone = value.tzinfo
         if zone and zone != pytz.utc:
@@ -59,8 +60,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a timedelta as a field to a CSV file.
 
-        :param datetime.timedelta value: The timedelta.
-        :param Any file: The file like object
+        :param value: The timedelta.
+        :param file: The file like object
         """
         MySqlLoaderWriter.write_string(str(value), file)
 
@@ -70,8 +71,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a decimal as a field to a CSV file.
 
-        :param Decimal value: The decimal.
-        :param Any file: The file like object
+        :param value: The decimal.
+        :param file: The file like object
         """
         file.write(str(value))
 
@@ -81,8 +82,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a float as a field to a CSV file.
 
-        :param float value: The float.
-        :param Any file: The file like object
+        :param value: The float.
+        :param file: The file like object
         """
         file.write(str(value))
 
@@ -92,8 +93,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes an integer as a field to a CSV file.
 
-        :param int value: The integer.
-        :param Any file: The file like object
+        :param value: The integer.
+        :param file: The file like object
         """
         file.write(str(value))
 
@@ -103,8 +104,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes None as a field to a CSV file.
 
-        :param None _: The None object.
-        :param Any file: The file like object
+        :param _: The None object.
+        :param file: The file like object
         """
         file.write('\\N')
 
@@ -114,8 +115,8 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a string as a field to a CSV file.
 
-        :param str value: The string.
-        :param Any file: The file.
+        :param value: The string.
+        :param file: The file.
         """
         if value == '':
             file.write('\\N')
@@ -129,7 +130,7 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         """
         Writes a row to the destination file.
 
-        :param dict[str,Any] row: The row.
+        :param row: The row.
         """
         for field in self._fields:
             self._write_field(row[field])
@@ -139,26 +140,27 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def write_uuid(value, file: Any) -> None:
+    def write_uuid(value: UUID, file: Any) -> None:
         """
         Writes a UUID as a field to a CSV file.
 
-        :param uuid.UUID value: The UUID.
-        :param Any file: The file like object
+        :param value: The UUID.
+        :param file: The file like object
         """
         MySqlLoaderWriter.write_string(str(value), file)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def get_bulk_load_sql(self, table_name: str) -> str:
+    def get_bulk_load_sql(self, table_name: str, partition: Optional[str] = None) -> str:
         """
         Returns a SQL statement for bulk loading the data into a table.
 
-        :param str table_name: The name of the table.
-
-        :rtype: str
+        :param table_name: The name of the table.
+        :param partition: When applicable, the name of the partition in which the data must be loaded.`
         """
         sql = "load data local infile '{FILENAME}'"
         sql += ' into table `{TABLE_NAME}`'
+        if partition is not None:
+            sql += ' partition ({PARTITION})'
         sql += ' character set {ENCODING}'
         sql += " fields terminated by ','"
         sql += " optionally enclosed by '\\\''"
@@ -166,8 +168,7 @@ class MySqlLoaderWriter(SqlLoaderWriter, ABC):
         sql += " lines terminated by '\\n'"
 
         return sql.format(FILENAME=self._filename,  # @todo Quoting of filename
-                          ENCODING=self._encoding,
-                          TABLE_NAME=table_name)
+                          ENCODING=self._encoding, TABLE_NAME=table_name, PARTITION=partition)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
