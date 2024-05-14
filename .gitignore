@@ -3,8 +3,8 @@
 /bin/
 /composer.lock
 /dist/
-/ETLT_MySQL.egg-info/
-/test/writer/MySqlLoaderWriterTest/test_types.csv
+/poetry.lock
 /test/html/
+/test/test/coverage.xml
+/test/writer/MySqlLoaderWriterTest/test_types.csv
 /vendor/
-*.pyc
