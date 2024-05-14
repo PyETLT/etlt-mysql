@@ -1,4 +1,6 @@
-# ETLT-MySQL: ETLT extension for MariaDB and MySQL databases
+# ETLT-MySQL
+
+ETLT extension for MariaDB and MySQL databases
 
 <table>
     <thead>
